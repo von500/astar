@@ -22,7 +22,7 @@ the result will write to p.
 
 ----------
 
-build:
+Build test.cpp:
 ------
 
 build on windows vs12
