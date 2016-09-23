@@ -1,5 +1,5 @@
 # astar algorithm
-=======================
+
 To Use:
 ---------
 first write a struct or class like:
