@@ -1,4 +1,4 @@
-# astar algorithm
+# astar algorithm in c++ (A*)
 
 To Use:
 ---------
