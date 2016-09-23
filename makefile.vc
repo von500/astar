@@ -1,0 +1,13 @@
+
+objects = test.obj
+test.exe: $(objects)
+	link $(objects)
+
+$(objects): astar.hpp
+
+test.obj: test.cpp
+	cl test.cpp
+
+.PHONY:clean
+clean:
+	del test.exe, $(objects)
