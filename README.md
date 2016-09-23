@@ -19,6 +19,7 @@ a map to receive path, distance
 
 pass graph, p, d, start, goal to astar algorithm
 the result will write to p.
+
 ----------
 
 build:
