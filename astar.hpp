@@ -48,23 +48,8 @@ bool astar(Graph & g, std::unordered_map<ElemKey, ElemKey> & predecessor,
 		{
 			if (predecessor.end() == predecessor.find(edge.second))
 			{
-				CostType dis = g.distance(edge.first, edge.second) + current_distance;
-
-				auto edge_weight = g.get_edges(edge.second);
-				for (auto ew : edge_weight)
-				{
-					auto iter = distance.find(ew.second);
-					if (iter != distance.end())
-					{
-						float d = g.distance(iter->first, iter->second);
-						if (dis > d + iter->second)
-						{
-							dis = d + iter->second;
-						}
-					}
-				}
-
-				distance[edge.second] = dis;
+				CostType dis = g.distance(edge.first, edge.second);
+				distance[edge.second] = dis + current_distance;
 
 				dis += g.heuristic(edge.second, goal);
 				open_list.push_front(make_pair(dis, edge.second));
