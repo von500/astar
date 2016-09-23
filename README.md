@@ -19,3 +19,15 @@ a map to receive path, distance
 
 pass graph, p, d, start, goal to astar algorithm
 the result will write to p.
+----------
+
+build:
+------
+
+build on windows vs12
+
+    nmake -f makefile.vc
+	
+build on linux gcc 5.2.1
+
+    make
