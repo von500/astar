@@ -1,6 +1,6 @@
 # astar algorithm
 =======================
-__To Use:
+To Use:
 ---------
 first write a struct or class like:
 
