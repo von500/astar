@@ -14,6 +14,7 @@
 
 #include <list>
 #include <unordered_map>
+#include <unordered_set>
 
 struct less_pair_first
 {
@@ -29,7 +30,10 @@ bool astar(const Graph & g, std::unordered_map<ElemKey, ElemKey> & predecessor,
 	std::unordered_map<ElemKey, CostType> & distance,
 	const ElemKey & start, const ElemKey & goal)
 {
+	std::unordered_set<ElemKey> open_set;
+	std::unordered_set<ElemKey> close_set;
 	std::list<pair<CostType, ElemKey>> open_list;
+
 	open_list.push_back(make_pair(CostType(), start));
 
 	// 
@@ -50,6 +54,11 @@ bool astar(const Graph & g, std::unordered_map<ElemKey, ElemKey> & predecessor,
 			ElemKey source = edge.first;
 			ElemKey target = edge.second;
 
+			if (close_set.end() != close_set.find(target))
+			{
+				continue;
+			}
+
 			CostType target_distance = g.distance(source, target);
 			target_distance += current_distance;
 
@@ -59,25 +68,17 @@ bool astar(const Graph & g, std::unordered_map<ElemKey, ElemKey> & predecessor,
 				continue;
 			}
 
-			auto weight = g.get_edges(target);
-			for (auto w : weight)
-			{
-				auto iter = distance.find(w.second);
-				if (iter != distance.end())
-				{
-					CostType d = g.distance(target, w.second);
-					if (target_distance > d + iter->second)
-					{
-						target_distance = d + iter->second;
-					}
-				}
-			}
+			close_set.insert(source);
 
 			distance[target] = target_distance;
 			predecessor[target] = current;
 
-			target_distance += g.heuristic(target, goal);
-			open_list.push_front(make_pair(target_distance, target));
+			if (open_set.end() == open_set.find(target))
+			{
+				target_distance += g.heuristic(target, goal);
+				open_list.push_front(make_pair(target_distance, target));
+				open_set.insert(target);
+			}
 
 			if (goal == target)
 			{
