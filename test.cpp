@@ -33,7 +33,7 @@ using namespace std;
 
 struct graph
 {
-	vector<pair<int, int>> get_edges(int v)
+	vector<pair<int, int>> get_edges(int v) const
 	{
 		vector<pair<int, int>> edges;
 
@@ -48,7 +48,7 @@ struct graph
 		return edges;
 	}
 
-	float distance(int a, int b)
+	float distance(int a, int b) const
 	{
 		auto iter = data.find(a);
 		if (iter != data.end())
@@ -63,7 +63,7 @@ struct graph
 		return 0.0f;
 	}
 
-	float heuristic(int a, int b)
+	float heuristic(int a, int b) const
 	{
 		return 0.0f;
 	}
