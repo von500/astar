@@ -12,18 +12,9 @@
  
 */
 
-#include <list>
+#include <map>
 #include <unordered_map>
 #include <unordered_set>
-
-struct less_pair_first
-{
-	template<typename Elem>
-	bool operator()(const Elem & a, const Elem & b)
-	{
-		return a.first < b.first;
-	}
-};
 
 template<typename Graph, typename ElemKey, typename CostType>
 bool astar(const Graph & g, std::unordered_map<ElemKey, ElemKey> & predecessor, 
@@ -32,21 +23,22 @@ bool astar(const Graph & g, std::unordered_map<ElemKey, ElemKey> & predecessor,
 {
 	std::unordered_set<ElemKey> open_set;
 	std::unordered_set<ElemKey> close_set;
-	std::list<pair<CostType, ElemKey>> open_list;
+	std::multimap<CostType, ElemKey> open_map;
 
-	open_list.push_back(make_pair(CostType(), start));
+	open_map.insert(make_pair(CostType(), start));
 
 	// 
 	distance[start] = CostType();
 	predecessor[start] = ElemKey();
 
-	while (!open_list.empty())
+	while (!open_map.empty())
 	{
-		auto v = open_list.front();
-		open_list.pop_front();
+		auto v = open_map.begin();
 
-		ElemKey current = v.second;
+		ElemKey current = v->second;
 		CostType current_distance = distance[current];
+
+		open_map.erase(v);
 
 		auto edges = g.get_edges(current);
 		for (auto edge : edges)
@@ -76,7 +68,7 @@ bool astar(const Graph & g, std::unordered_map<ElemKey, ElemKey> & predecessor,
 			if (open_set.end() == open_set.find(target))
 			{
 				target_distance += g.heuristic(target, goal);
-				open_list.push_front(make_pair(target_distance, target));
+				open_map.insert(make_pair(target_distance, target));
 				open_set.insert(target);
 			}
 
@@ -85,7 +77,6 @@ bool astar(const Graph & g, std::unordered_map<ElemKey, ElemKey> & predecessor,
 				return true;
 			}
 		}
-		open_list.sort(less_pair_first());
 	}
 
 	return false;
